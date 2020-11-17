@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from "express";
 
 const { validateRegisterUser } = require("../validators/user");
 
-userRoutes.post("/login", async function (req: Request, res: Response) {
+userRoutes.post("/auth/login", async function (req: Request, res: Response) {
   const user: User = await User.findOne({
     where: {
       username: req.body.username,
@@ -37,8 +37,6 @@ userRoutes.post("/login", async function (req: Request, res: Response) {
       .status(200)
       .cookie("jwt", tokenObject.token, { httpOnly: true })
       .json({
-        success: true,
-        user: {
           username: user.username,
           first_name: user.first_name,
           last_name: user.last_name,
@@ -48,12 +46,11 @@ userRoutes.post("/login", async function (req: Request, res: Response) {
           city: user.city,
           phone: user.phone,
           avatar: user.avatar,
-        },
       });
   }
 });
 
-userRoutes.post("/register", validateRegisterUser, async function (
+userRoutes.post("/auth/register", validateRegisterUser, async function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -69,13 +66,13 @@ userRoutes.post("/register", validateRegisterUser, async function (
 
   try {
     const newUser = await buildUser.save();
-    return res.json({ success: true, user: newUser });
+    return res.json({ ...newUser.toJSON() });
   } catch (error) {
     next(error);
   }
 });
 
-userRoutes.post("/logout", async (req: Request, res: Response) => {
+userRoutes.post("/auth/logout", async (req: Request, res: Response) => {
   await req.logout();
   res.clearCookie("jwt");
 

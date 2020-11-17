@@ -12,7 +12,7 @@ exports.getPosts = async (req: Request, res: Response, next: NextFunction) => {
       order: [["published_date", "DESC"]],
     });
 
-    res.status(200).json({ message: "All posts", posts });
+    res.status(200).json({ ...posts });
   } catch (error) {
     next(error);
   }
@@ -36,7 +36,7 @@ exports.getPost = async (req: Request, res: Response, next: NextFunction) => {
       throw error;
     }
 
-    res.status(200).json({ message: "Get Post", post });
+    res.status(200).json({ ...post.toJSON() });
   } catch (error) {
     error.statusCode = 404;
     next(error);
@@ -56,7 +56,7 @@ exports.createPost = (req: Request, res: Response, next: NextFunction) => {
   return newPost
     .save()
     .then((post) => {
-      res.status(201).json({ message: "Post created", post });
+      res.status(201).json({ ...post.toJSON() });
     })
     .catch((err) => next(err));
 };
@@ -94,7 +94,7 @@ exports.editPost = async (req: Request, res: Response, next: NextFunction) => {
       throw error;
     }
 
-    res.status(200).json({ message: "Post is updated", post });
+    res.status(200).json({ ...post.toJSON() });
   } catch (error) {
     error.statusCode = 404;
     next(error);
@@ -129,7 +129,7 @@ exports.deletePost = async (req, res, next: NextFunction) => {
       throw error;
     }
 
-    res.status(200).json({ message: "The post is deleted" });
+    res.status(204);
   } catch (error) {
     error.statusCode = 404;
     next(error);

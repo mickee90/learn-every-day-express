@@ -37,7 +37,7 @@ exports.editUser = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res.status(200).json({ user: apiUserObject(user) });
+    res.status(200).json( { ...apiUserObject(user) });
   } catch (error) {
     next(error);
   }
@@ -86,7 +86,7 @@ exports.editPassword = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res.status(200).json({ user: apiUserObject(user) });
+    res.status(200).json({ ...apiUserObject(user) });
   } catch (error) {
     next(error);
   }
@@ -125,7 +125,7 @@ exports.uploadAvatar = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res.status(200).json({ user: apiUserObject(user) });
+    res.status(200).json({ ...apiUserObject(user) });
   } catch (error) {
     next(error);
   }
