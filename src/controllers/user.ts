@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 exports.getUser = async (req: Request, res: Response) => {
   const user = apiUserObject(req.user);
 
-  res.status(200).json({ user });
+  res.status(200).json({ data: user });
 };
 
 exports.editUser = async (req: Request, res: Response, next) => {
@@ -37,7 +37,7 @@ exports.editUser = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res.status(200).json( { ...apiUserObject(user) });
+    res.status(200).json( { data: { ...apiUserObject(user) }});
   } catch (error) {
     next(error);
   }
@@ -125,7 +125,7 @@ exports.uploadAvatar = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res.status(200).json({ ...apiUserObject(user) });
+    res.status(200).json( { data: { ...apiUserObject(user) }});
   } catch (error) {
     next(error);
   }

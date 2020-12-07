@@ -12,7 +12,7 @@ exports.getPosts = async (req: Request, res: Response, next: NextFunction) => {
       order: [["published_date", "DESC"]],
     });
 
-    res.status(200).json({ ...posts });
+    res.status(200).json({ data: posts});
   } catch (error) {
     next(error);
   }
@@ -36,7 +36,7 @@ exports.getPost = async (req: Request, res: Response, next: NextFunction) => {
       throw error;
     }
 
-    res.status(200).json({ ...post.toJSON() });
+    res.status(200).json({ data: { ...post.toJSON() }});
   } catch (error) {
     error.statusCode = 404;
     next(error);
@@ -56,7 +56,7 @@ exports.createPost = (req: Request, res: Response, next: NextFunction) => {
   return newPost
     .save()
     .then((post) => {
-      res.status(201).json({ ...post.toJSON() });
+      res.status(201).json({ data: { ...post.toJSON() }});
     })
     .catch((err) => next(err));
 };
@@ -94,7 +94,7 @@ exports.editPost = async (req: Request, res: Response, next: NextFunction) => {
       throw error;
     }
 
-    res.status(200).json({ ...post.toJSON() });
+    res.status(200).json({ data: { ...post.toJSON() }});
   } catch (error) {
     error.statusCode = 404;
     next(error);
@@ -121,7 +121,7 @@ exports.deletePost = async (req, res, next: NextFunction) => {
 
     const deletedPost = await Post.destroy({
       where: { id: postId },
-    });
+    }).catch(e => console.log(e));
 
     if (!deletedPost) {
       const error = new Error("The post could not be deleted");

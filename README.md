@@ -6,7 +6,6 @@ https://github.com/mickee90/learn-every-day-vue
 # Setup 
 
 ```
-cd server
 npm install
 ```
 
