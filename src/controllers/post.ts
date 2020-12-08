@@ -1,18 +1,30 @@
+import url from 'url';
+
 import { Post, Posts } from "../models/Post";
 import { Request, Response, NextFunction } from "express";
+import { getPagination, getPaginationData} from "../utils/pagination"
+
 
 exports.getPosts = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.user.id) {
     return res.status(400).json({ message: "Something went wrong" });
   }
 
+  // Set the url object to any so that we can converty it to a queryParams afterwards 
+  // (otherwise the default strings on sortProp and sortType would not work)
+  const query: any = url.parse(req.url, true).query;
+  const { page = 1, size = 10, sortProp = 'published_date', sortType = 'DESC' }: queryParams = query;
+  const { limit, offset } = getPagination(page, size);
+
   try {
-    const posts: typeof Posts = await Post.findAll({
+    const data: any = await Post.findAndCountAll({
       where: { user_id: req.user.id, deleted: 0 },
-      order: [["published_date", "DESC"]],
+      limit,
+      offset,
+      order: [[sortProp, sortType], ["createdAt", sortType]],
     });
 
-    res.status(200).json({ data: posts});
+    res.status(200).json(getPaginationData(data, page, limit));
   } catch (error) {
     next(error);
   }

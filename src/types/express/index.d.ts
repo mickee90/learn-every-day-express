@@ -6,3 +6,10 @@ declare namespace Express {
     sessionOptions: Object;
   }
 }
+
+interface queryParams {
+  page: number;
+  size: number;
+  sortProp: string;
+  sortType: string;
+}
