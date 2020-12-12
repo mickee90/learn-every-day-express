@@ -13,7 +13,7 @@ exports.getPosts = async (req: Request, res: Response, next: NextFunction) => {
   // Set the url object to any so that we can converty it to a queryParams afterwards 
   // (otherwise the default strings on sortProp and sortType would not work)
   const query: any = url.parse(req.url, true).query;
-  const { page = 1, size = 10, sortProp = 'published_date', sortType = 'DESC' }: queryParams = query;
+  const { page = 1, size = 15, sortProp = 'published_date', sortType = 'DESC' }: queryParams = query;
   const { limit, offset } = getPagination(page, size);
 
   try {

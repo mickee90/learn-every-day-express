@@ -30,7 +30,6 @@ const fileFilter = (req, file, callback) => {
 const uploadAvatar = multer({ storage: fileStorage, fileFilter }).single(
   "avatar"
 );
-// console.log(path.join(__dirname, "images"))
 
 userRoutes.get("/", userController.getUser);
 userRoutes.put("/", validateEditUser, userController.editUser);

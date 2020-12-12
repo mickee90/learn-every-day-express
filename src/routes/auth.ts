@@ -55,7 +55,6 @@ userRoutes.post("/auth/register", validateRegisterUser, async function (
   res: Response,
   next: NextFunction
 ) {
-  console.log("/register");
   const buildUser: User = User.build({
     username: req.body.username,
     email: req.body.username,

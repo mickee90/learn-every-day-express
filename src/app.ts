@@ -85,7 +85,6 @@ const port = process.env.PORT || 3000;
 // })();
 sequelize.sync().then(
   function () {
-    console.log("DB connection sucessful.");
     app.listen(port, () => console.info(`Server running on port ${port}`));
   },
   function (err) {
